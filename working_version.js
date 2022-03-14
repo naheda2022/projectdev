@@ -5,6 +5,8 @@ const nameInput = document.querySelector('.name-product')
 const priceInput = document.querySelector('.price-product')
 const addBtn = document.querySelector('.add-product')
 const deleteBtn = document.querySelector('.delete-product')
+const form = document.querySelector('form')
+
 
 let productData = getDataFromElmLocalStorage()
 
@@ -30,7 +32,7 @@ function getDataToLocalStorage(item){
 
 function saveDataToLocalStorage(item){
     let items = ''
-    if(localStorage.getItem('productItem') ===null){
+    if(localStorage.getItem('productItem') === null){
         item = []
         item.push(item)
         localStorage.setItem('productItems', JSON.stringify(items) )
@@ -42,16 +44,86 @@ function saveDataToLocalStorage(item){
     }
 }
 
+function deleteItemFormlocalStorage(){
+
+}
 
 function loadEvetListener(){
     productListUl.addEventListener('.click', deleteProduct)
     window.addEventListener('.DOMContentLoaded', getData.bind(null, productData))
-    addBtn.addEventListener('.click', addItem)
+    form.addEventListener('.click', addOrUpdeteProduct)
+  
     filterInput.addEventListener('keyup', filterProduct)
 }
 
 function showMessage(message =''){
-    msg.texContent = messag
+    msg.texContent = message
+}
+
+function addEventListener(){
+    if(e.target.classList.contains('add-product')){
+        addItem(e)
+    }else if(e.terget.classList.contains('update-product')){
+        updateProduct()
+    }
+} 
+
+function addOrUpdeteProduct(e){
+    if(e.target.classList.contains('add-product')){
+        addItem(e)
+    }else if(e.target.classList.contains('update-product')){
+        updateProduct(e)
+    }
+}
+
+
+function  updateProduct(e){
+    e.prevenDefault()
+    console.log(e.target)
+    const name = nameInput.value
+    const price = priceInput.value
+    const id = perseItn(e.target.previousElementSibling.value, 10)
+    const productWithUpdates = productData.map(product => {
+        if(product.id === id){
+            return{
+                ...product,
+                name,
+                price
+            }
+
+        }else{
+            return product
+        }
+    })  
+}
+
+
+const addItem = (e) => {
+    const name = nameInput.value
+    const price = priceInput.value
+    let id
+    if(productData.length === 0){
+        id = 0
+    }else{
+        id = productData[productData.length-1].id + 1
+    }
+    if(
+        name ===''||
+        price === ''||
+        !(isNaN(perseFloat(price)) && isFinite(price))
+ )  {
+        alert('please fill up valid information')
+    }else{
+        const data = {
+            id,
+            name,
+            price
+        }
+        productData.push(data)
+        getData(productData)
+        nameInput.value = ''
+        priceInput.value = ''
+    }
 }
 
 
@@ -64,17 +136,14 @@ function getData(productList){
             li.className = 'list-group-item collection-item'
             li.id =`product-${id}` 
             li.innerHTML = `<stong>${name}</stong>-<span class ="price">$${price}</span>
-            <i class="fas fa-trash float-end edit-product"></i>
-            <i class="fas fa-trash float-end delete-product"></i>
+            <i class="fas fa-pencil-alt float-left edit-product"></i>
+            <i class="fas fa-trash float-left delete-product"></i>
             `
         })
             
         }
-    }
+    }      
 
-    const addItem = e => {
-         
-    }
 
     function  findProduct(id){
        return productData.find(product => product.id === id)
@@ -83,14 +152,14 @@ function getData(productList){
     function populateEditForm(product){
         nameInput.value = product.name
         priceInput.value = product.price 
-        const elm = `<button class="btn mt-3 btn-block btn-info update-product">update</button>`
+        const elm = `<input type="hidden" name="id" value=${product.id}/><button class="btn mt-3 btn-block btn-info update-product">update</button>`
         document.forms[0].insertAdjacentHTML('beforeend', elm)
         addBtn.style.display = 'none'()
     }
 
-    function updatProduct(){
+    // function updateProduct(){
 
-    }
+    // }
 
 
     const modifyOrRemoveProduct = e =>{
@@ -112,15 +181,18 @@ function getData(productList){
             const foundProduct = productData.find(product => product.id === id)
             console.log(foundProduct)
             populateEditForm(foundProduct)
-            updateProduct()
-        }      
+
+            document.querySelector('.update-product').addEventListener('.click',() => {
+
+            }) 
             
+        }    
         
     }
 
-    const filterProduct = e=> {
-
-    }
+loadEvetListener()
 
 
-    loadEvetListener()
+
+
+   

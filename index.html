@@ -26,11 +26,19 @@
              placeholder="filter your product"
              />
         </nav>
-        <div class="card card-body">
-            <ul class="lisr-group collection">
+            <div class="card card-body">
+                <ul class="list-group collection">
 
-            </ul>
-            <span class="msg"></span>
+                    <li class="list-group-item collection-item">
+                        <strong>Apple</strong>- <span class="price">$30</span>
+                        <i class="fa fa-trash float-end"></i>
+                    </li>
+                     <li class="list-group-item collection-item">
+                            <strong>Banana</strong>- <span class="price">$30</span>
+                        <i class="fa fa-trash float-end"></i>
+                     </li>
+                </ul>
+                <span class="msg"></span>
             <form> 
                 <div class="row mt-4">
                     <div class="col">
@@ -40,14 +48,13 @@
                         <input type="text" placeholder="product price" class="form-control product-price">
                     </div>
                 </div>
-                <button class="btn mt-3 btn-block btn-primary add-product">submit</button>
+                    <button class="btn mt-3 btn-block btn-primary add-product" tp-type="button" style="display:none;">submit</button>
+
+                    <input type="hidden" name="id" value="3">  
+                     <button class="btn mt-3 btn-block btn-info update-product" tp-type="button">update</button>
             </form>
-         </div>
-     
-    </div>
-    
-
-
-    <script src="working_verson.js"></script>
+        </div>
+     </div>
+    <script src="working_version.js"></script>
 </body>
 </html>
